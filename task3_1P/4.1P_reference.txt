@@ -1,0 +1,231 @@
+Week 4 Evidence of
+Learning
+
+SIT707 ­ Software Quality and Testing
+
+  PART A DECISION TABLE TESTING & PATH TESTING
+Task Overview
+
+This week I explored key testing techniques as part of my evidence of learning for SIT707.
+
+1                                                                                           2
+
+Decision Table Testing                    Path Testing
+
+Systematic black-box test case design     White-box coverage of control flow
+
+                        3                                         4
+
+JUnit Testing                             Real-World Reflection
+
+Automating test cases for the login form  Applying these methods to real software systems
+Decision Table Testing
+
+This week I learned that decision table testing is a black-box technique
+used to design test cases systematically.
+
+Condition-Based                  Action-Oriented
+
+Identifies all input conditions  Maps conditions to expected
+that affect system behaviour     actions or outcomes
+
+Systematic Coverage
+
+Ensures all combinations are considered, reducing missed cases
+How Decision Tables Work
+
+    Identify                           Create Rules                          Key Concepts
+  Conditions
+                                            Combine                                    Conditions ­ inputs or states that
+List varying inputs                     conditions into                                vary
+      or states
+                                         unique rules                                  Actions ­ expected system
+                                                                                       responses
+                         Identify                          Convert to
+                         Actions                               Tests                   Rules ­ unique combinations of
+                                                                                       conditions
+                     Specify expected                     Map each rule to
+                     system responses                    an executable test            Test Cases ­ one per rule
+
+                                                                  case
+
+Each rule in the table maps directly to one executable test case.
+Login Form Example
+
+I understood that the login form uses 3 variables -- Username, Password, and Validation Code -- to build a decision table.
+
+Symbol  Meaning        Variable  Test Role
+=       Empty field    Any       Invalid input
+W       Wrong value    Any       Failure case
+C       Correct value  Any       Success case
+X       Don't care     Any       Irrelevant condition
+
+Each combination of symbols forms one rule  one test case. This supports complete and traceable test design.
+Path Testing
+
+I found that path testing is a white-box technique that analyses the
+internal control flow of a program.
+
+         Branch Coverage
+
+           Tests every decision branch -- true and false
+
+         Independent Paths
+
+           Identifies unique execution paths through the code
+
+         Code Coverage
+
+           Improves confidence that all logic is exercised
+Path Testing Example                                                                                      Key Terms (Simply Put)
+
+                                                                 Check Code                                  Nodes
+
+                                                                                 Validate security code       Points in code where decisions are
+                                                                                                              made
+                                                                 Check Password
+                                                                                                             Branches
+                                                                                 Valid or invalid branch
+                                                                                                              Paths taken based on true/false
+                                                                 Check Username                               outcomes
+
+                                                                                 Valid or invalid branch     Cyclomatic Complexity
+
+                                                                 Start                                        Number of independent paths = number
+                                                                                                              of test cases needed
+                                                                                  Begin login flow
+JUnit Testing Connection
+
+I learned that JUnit allows us to automate the test cases designed from decision tables and path analysis.
+
+  assertTrue
+
+   Verifies a condition is true
+
+assertFalse
+
+Verifies a condition is false
+
+assertEquals                       This decision table shows how different combinations of
+                                   username, password, and validation code produce different
+Checks expected vs actual output   system outcomes.
+
+Repeatable
+
+Tests run consistently every time
+Real-World Reflection
+
+These methods are useful because real software systems rely on
+complex logic that must be tested thoroughly.
+
+        Login & Authentication Systems
+
+          Decision tables map all valid/invalid credential combinations
+
+        Banking & Approval Workflows
+
+          Rules-based logic benefits directly from decision table coverage
+
+        Booking & Payment Systems
+
+          Path testing ensures all code branches are exercised before
+          release
+Active Learning Evidence
+
+Practised building decision tables for the  Traced independent paths through  Linked test cases to JUnit assertions
+login form                                  control flow diagrams
+
+In the active learning session, I reviewed tasks on decision table testing and JUnit-based test creation using a simple login form
+example. I also looked at how test cases can be generated from conditions, actions, and program paths. This helped me
+understand how decision table testing and path testing are applied in practice.
+
+Figure 1: My active learning working showing a decision table, path examples, and key learning points
+  WEEK 4 COMPLETE
+
+Conclusion
+
+This week I understood that decision table testing and path testing are complementary strategies -- one ensures all input combinations are covered,
+the other ensures all code paths are exercised.
+
+Decision Table Testing                  Path Testing
+
+Covers all input combinations           Exercises all code paths
+
+Together with JUnit, these techniques form a strong foundation for building reliable, well-tested software.
+
+                     Robustness         Comprehen    Decision Table
+                        Checks               sive         Testing
+
+                     Testing system        Testing          Analyzing
+                   performance under      Strategy     combinations of
+                                                       input conditions.
+                            stress.
+                                                      Path Testing
+                      Combined
+                       Validation                   Ensuring all program
+                                                    paths are executed.
+                    Verifying multiple
+                       components
+                          together.
+SIT707 Software Quality and Testing Pass
+Task: (a) Evidence learning for the topic, (b)
+Decision table testing using JUnit
+
+Part B - Decision Table Testing Using JUnit
+In this task, I created JUnit test cases for the LoginForm program by using decision table
+testing. The program checks three values: username, password, and validation code.
+The idea was to test different combinations of these values and check whether the
+result is correct.
+For the decision table, I used these symbols:
+
+    · - = empty
+    · W = wrong
+    · C = correct
+    · X = don't care
+
+Here is the decision table I used:
+
+Rule Username Password Validation Code Expected Result
+
+1-    -  X  Login fails
+
+2-    W  X  Login fails
+
+3-    C  X  Login fails
+
+4W    -  X  Login fails
+
+5W    W  X  Login fails
+
+6W    C  X  Login fails
+
+7C    -  X  Login fails
+
+8C    W  X  Login fails
+
+9C    C  -  Validation fails
+
+10 C  C  W  Validation fails
+Rule Username Password Validation Code Expected Result
+
+11 C  C  C  Login succeeds
+
+After making the decision table, I wrote the test cases in LoginFormTest.java. I added
+the student ID and name in the first two tests, then I added the remaining test cases
+based on the table. These included failed login cases, successful login, wrong validation
+code, empty validation code, and correct validation code.
+
+Then I ran the test file as a JUnit test in Eclipse. All 12 tests passed successfully.
+    · Runs: 12
+    · Errors: 0
+    · Failures: 0
+
+This shows that the program worked correctly for the tested conditions.
+I also ran Main.java and checked the console output. The output showed the failed login
+cases, successful login case, and validation code results.
+
+After finishing the task, I uploaded the project to GitHub.
+From this task, I understood that decision table testing is useful because it helps
+organise different combinations of inputs clearly. JUnit was also useful because it made
+it easy to run all the tests and check whether they passed or failed.
+
