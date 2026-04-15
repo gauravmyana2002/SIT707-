@@ -1,7 +1,5 @@
 package sit707_tasks;
 
-import java.util.Random;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -47,11 +45,13 @@ public class DateUtilTest {
 	
 	@Test
 	public void testNominalJanuary() {
-		int rand_day_1_to_31 = 1 + new Random().nextInt(31);
-        DateUtil date = new DateUtil(rand_day_1_to_31, 1, 2024);
+        DateUtil date = new DateUtil(15, 1, 2024);
         System.out.println("testJanuaryNominal > " + date);
         date.increment();
         System.out.println(date);
+        Assert.assertEquals(16, date.getDay());
+        Assert.assertEquals(1, date.getMonth());
+        Assert.assertEquals(2024, date.getYear());
 	}
 	
 	/*
@@ -160,6 +160,17 @@ public class DateUtilTest {
 		Assert.assertEquals(9, date.getMonth());
 		Assert.assertEquals(2024, date.getYear());
 	}
+
+	@Test
+	public void testJuly31ShouldIncrementToAugust1() {
+		DateUtil date = new DateUtil(31, 7, 2024);
+		System.out.println("july31ShouldIncrementToAugust1 > " + date);
+		date.increment();
+		System.out.println(date);
+		Assert.assertEquals(1, date.getDay());
+		Assert.assertEquals(8, date.getMonth());
+		Assert.assertEquals(2024, date.getYear());
+	}
 	
 	@Test
 	public void testSeptember1ShouldDecrementToAugust31() {
@@ -180,6 +191,17 @@ public class DateUtilTest {
 		System.out.println(date);
 		Assert.assertEquals(1, date.getDay());
 		Assert.assertEquals(12, date.getMonth());
+		Assert.assertEquals(2024, date.getYear());
+	}
+
+	@Test
+	public void testOctober31ShouldIncrementToNovember1() {
+		DateUtil date = new DateUtil(31, 10, 2024);
+		System.out.println("october31ShouldIncrementToNovember1 > " + date);
+		date.increment();
+		System.out.println(date);
+		Assert.assertEquals(1, date.getDay());
+		Assert.assertEquals(11, date.getMonth());
 		Assert.assertEquals(2024, date.getYear());
 	}
 	
