@@ -1,6 +1,11 @@
 package web.service;
 
+import java.nio.file.Paths;
+
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -10,59 +15,74 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 public class LoginServiceTest {
 	
-	private void sleep(long sec) {
-		try {
-			Thread.sleep(sec*1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	private WebDriver driver;
+	
+	@Before
+	public void setUp() {
+		Assume.assumeTrue("Run Selenium tests with -Dselenium.tests=true after starting MyServer.",
+				Boolean.getBoolean("selenium.tests"));
+		driver = new ChromeDriver();
+	}
+	
+	@After
+	public void tearDown() {
+		if (driver != null) {
+			driver.quit();
 		}
+	}
+
+	@Test
+	public void testLoginSuccess() {
+		submitLoginForm("ahsan", "ahsan_pass", "1990-01-01");
+		assertLoginResponse("success", "Login status: success");
 	}
 	
 	@Test
-	public void testLoginSuccess() {
-		System.setProperty(
-				"webdriver.chrome.driver", 
-				"/home/mahabib/java_lib/chromedriver-linux64/chromedriver");
+	public void testLoginFailsForWrongPassword() {
+		submitLoginForm("ahsan", "wrong_pass", "1990-01-01");
+		assertLoginResponse("fail", "Login status: fail");
+	}
+	
+	@Test
+	public void testLoginFailsForWrongDob() {
+		submitLoginForm("ahsan", "ahsan_pass", "1990-01-02");
+		assertLoginResponse("fail", "Login status: fail");
+	}
+	
+	@Test
+	public void testLoginFailsForMissingDob() {
+		submitLoginForm("ahsan", "ahsan_pass", "");
+		assertLoginResponse("fail", "Login status: fail");
+	}
+	
+	private void submitLoginForm(String username, String password, String dob) {
+		driver.navigate().to(loginPageUrl());
 		
-		WebDriver driver = new ChromeDriver();		
-		System.out.println("Driver info: " + driver);
+		type(By.id("username"), username);
+		type(By.id("passwd"), password);
+		type(By.id("dob"), dob);
 		
-		// Full path where login.html is located.
-		// You can click on html file and copy the path shown in your browser.
-		//
-		driver.navigate().to(
-				"file:///home/mahabib/Documents/deakin_local/teaching/2024/sit707/jetty/pages/login.html");
-		sleep(5);
-		
-		// Find username element
-		//
-		WebElement ele = driver.findElement(By.id("username"));
-		ele.clear();
-		ele.sendKeys("ahsan");
-		
-		// Find password element
-		//
-		ele = driver.findElement(By.id("passwd"));
-		ele.clear();
-		ele.sendKeys("ahsan_pass");
-		
-		// Find Submit button, and click on button.
-		//
-		ele = driver.findElement(By.cssSelector("[type=submit]"));
-		ele.submit();
-		
-		sleep(5);
-		
-		/*
-		 * On successful login, the title of page changes to 'success',
-		 * otherwise, 'fail'.
-		 */
-		String title = driver.getTitle();
-		System.out.println("Title: " + title);
-		
-		Assert.assertEquals(title, "success");
-		
-		driver.close();
+		driver.findElement(By.cssSelector("[type=submit]")).submit();
+	}
+	
+	private void type(By locator, String value) {
+		WebElement element = driver.findElement(locator);
+		element.clear();
+		if (value != null && !value.isEmpty()) {
+			element.sendKeys(value);
+		}
+	}
+	
+	private void assertLoginResponse(String expectedTitle, String expectedStatus) {
+		Assert.assertEquals(expectedTitle, driver.getTitle());
+		Assert.assertEquals(expectedStatus, driver.findElement(By.id("status")).getText());
+	}
+	
+	private String loginPageUrl() {
+		return Paths.get("..", "pages", "login.html")
+				.toAbsolutePath()
+				.normalize()
+				.toUri()
+				.toString();
 	}
 }

@@ -3,7 +3,6 @@ package web.handler;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +33,7 @@ public class LoginServlet extends HttpServlet{
 		String password = req.getParameter("passwd");
 		String dob = req.getParameter("dob");
 		
-		System.out.println("Username/password: " + username + ", " + password);
+		System.out.println("Username/password/dob: " + username + ", " + password + ", " + dob);
 		
 		String loginStatus = "fail";
 		
@@ -42,14 +41,25 @@ public class LoginServlet extends HttpServlet{
 			loginStatus = "success";
 		}		
 		
+		resp.setContentType("text/html;charset=UTF-8");
+
 		String htmlResponse = "<html>";
 		htmlResponse += "<head><title>"+ loginStatus + "</title></head>";
-		htmlResponse += "<h2>Login status: " + loginStatus + "</h2>";
+		htmlResponse += "<body>";
+		htmlResponse += "<h2 id=\"status\">Login status: " + loginStatus + "</h2>";
+		htmlResponse += "<p id=\"message\">" + getMessage(loginStatus) + "</p>";
+		htmlResponse += "</body>";
 		htmlResponse += "</html>";
 		
 		PrintWriter writer = resp.getWriter();
 		writer.println(htmlResponse);
 	}
 
+	private String getMessage(String loginStatus) {
+		if ("success".equals(loginStatus)) {
+			return "Authentication successful.";
+		}
+		return "Authentication failed.";
+	}
 	
 }
