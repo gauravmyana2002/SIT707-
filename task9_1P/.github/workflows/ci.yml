@@ -22,4 +22,5 @@ jobs:
           cache: maven
 
       - name: Run unit tests and build artifact
+        working-directory: task9_1P
         run: mvn clean package
